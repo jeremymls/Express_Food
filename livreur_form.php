@@ -24,24 +24,25 @@ $livreur = $livreur->getRow("livreur_id", $_GET['livreur_id']);
 </form>
 <h2>Nombre de plats chargés</h2>
 
-<?= Singleton::getHtmlTable(
-    'SELECT 
-        produit.menu_id as id,  
-        count(produit.menu_id) as "Quantité",
-        menu.plat1,
-        menu.dessert1,
-        menu.plat2,
-        menu.dessert2
-    FROM 
-        produit 
-    join 
-        menu 
-    on 
-        produit.menu_id = menu.menu_id 
-    WHERE 
-        produit.livreur_id = ' . $_GET['livreur_id'] . ' 
-    and 
-        produit.commande_id IS NULL
+<?php 
+$sql = 'SELECT 
+    produit.menu_id as id,  
+    count(produit.menu_id) as "Quantité",
+    menu.plat1,
+    menu.dessert1,
+    menu.plat2,
+    menu.dessert2
+FROM produit 
+join menu on produit.menu_id = menu.menu_id 
+WHERE 
+    produit.livreur_id = ' . 
+    $_GET['livreur_id'] . 
+    ' and 
+    produit.commande_id IS NULL
     group by
-        produit.menu_id
-');
+    produit.menu_id';
+if (count(Singleton::getAllData($sql))){
+    echo Singleton::getHtmlTable($sql);
+} else {
+    echo "<p>Aucun plat chargé</p>";
+};
