@@ -44,10 +44,19 @@ echo Singleton::getHtmlTable('SELECT * FROM livreur ');
 
 <!-- Menu -->
 <h2>Menus</h2>
-<?php
-echo Singleton::getHtmlTable('SELECT * FROM menu ');
-?>
-<h2 id="menu">Ajouter un menu</h2>
+<h3 id="menu">Sélectionner le menu de jour</h3>
+<form action="menu_select.php" method="post">
+    <!-- <label for="menu_id" class="form-label">Menu</label> -->
+    <div class="row">
+        <div class="col-auto mb-3">
+            <?= Singleton::getHtmlSelect("menu_id", 'SELECT menu_id, concat("Menu ",menu_id," : ",plat1," - ",plat2," - ",dessert1," - ",dessert2) from menu') ?>
+        </div>
+        <div class="col mb-3">
+            <button type="submit" class="btn btn-primary">Valider</button>
+        </div>
+</form>
+<?= Singleton::getHtmlTable('SELECT * FROM menu '); ?>
+<h3 id="menu">Ajouter un menu</h3>
 <form action="menu_add.php" method="post">
     <div class="row">
         <div class="col-md-6 mb-3">

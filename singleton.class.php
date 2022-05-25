@@ -177,8 +177,14 @@ class Singleton
                     // Affiche les data
                     while ($row = $qry->fetch()) {
                         $html .= '<tr>';
-                        foreach ($row as $val) {
-                            $html .= '<td>' . $val . '</td>';
+                        foreach ($row as $key => $val) {
+                            if ($key == "menu_jour" && $val == 1) {
+                                $html .= '<td>Oui</td>';
+                            } elseif ($key == "menu_jour" && $val == 0) {
+                                $html .= '<td>Non</td>';
+                            } else {
+                                $html .= '<td>' . $val . '</td>';
+                            };
                         }
                         $html .= '</tr>';
                     }
