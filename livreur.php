@@ -3,7 +3,6 @@ $title = "Livreur";
 $page = "livreur";
 include "header.php";
 
-Singleton::setConfiguration(HOST, 3306, DB, USER, PASS);
 
 if (isset($_GET['livreur_id']) && !empty($_GET['livreur_id'])) {
     include "livreur_form.php";

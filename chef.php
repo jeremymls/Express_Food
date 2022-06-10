@@ -1,9 +1,8 @@
 <?php
 $title = "Chef";
 $page = "chef";
-include "header.php";
+include_once "header.php";
 
-Singleton::setConfiguration(HOST, 3306, DB, USER, PASS);
 $chef = new Model(HOST, 3306, DB, USER, PASS, 'chef');
 
 if (isset($_GET['chef_id']) && !empty($_GET['chef_id'])) {
@@ -16,7 +15,6 @@ if (isset($_GET['chef_id']) && !empty($_GET['chef_id'])) {
 <h2>Nombre de plats en stock</h2>
 
 <?php
-Singleton::setConfiguration(HOST, 3306, DB, USER, PASS);
 echo Singleton::getHtmlTable(
     'SELECT 
         produit.menu_id as id,  

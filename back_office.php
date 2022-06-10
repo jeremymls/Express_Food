@@ -3,7 +3,6 @@ $title = "Back Office";
 $page = "backOffice";
 include "header.php";
 
-Singleton::setConfiguration(HOST, 3306, DB, USER, PASS);
 ?>
 
 <!-- Chefs -->
