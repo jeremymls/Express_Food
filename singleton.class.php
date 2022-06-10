@@ -115,10 +115,11 @@ class Singleton
      * @param string $id - attributs id et name du composant
      * @param string $sql - requête SQL préparée de type SELECT/SHOW
      * @param array $vals - tableau de paramètres (défaut array())
+     * @param string $defaultValue - Valeur par défaut du composant
      * @return string code HTML 
      */
 
-    public static function getHtmlSelect($id, $sql, $vals = array())
+    public static function getHtmlSelect($id, $sql, $vals = array(), $defaultValue = null)
     {
         // Test si configuration dispo
         if (self::hasConfiguration()) {
@@ -130,6 +131,9 @@ class Singleton
                 $qry->execute($vals);
                 // Construit le composant HTML
                 $html = '<select id="' . $id . '" name="' . $id . '" class="form-control">';
+                if ($defaultValue !== null) {
+                    $html .= '<option>' . $defaultValue . '</option>';
+                }
                 while ($row = $qry->fetch(PDO::FETCH_NUM)) {
                     // Si requête renvoie une seule colonne
                     if ($qry->columnCount() === 1) {
