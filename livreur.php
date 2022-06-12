@@ -6,26 +6,32 @@ include "header.php";
 
 <h2>Livreur</h2>
 <?= Singleton::getHtmlTable('select id_livreur as id, nom, prenom, latitude, longitude, statut_livreur from livreur'); ?>
+<?php 
+    $btns[] = new stdClass();
+    $btns[0]->title = 'Ajouter';
+    $btns[0]->link = "livreur.php";
+    $btns[0]->options = array("id");
+    $btns[1]->title = 'supprimer';
+    $btns[1]->link = "livreur.php";
+    $btns[1]->options = array("id");
+    $btns[1]->color = "secondary";
+    
+    echo Singleton::getHtmlTableCustom('select id_livreur as id, nom, prenom, latitude, longitude, statut_livreur from livreur',[],$btns); 
+?>
 
 <form action="produit_edit.php" method="post">
     <?= Singleton::getHtmlSelect('id_livreur', 'select id_livreur, concat(id_livreur,"- ",prenom," ", nom) from livreur', [], 'Sélectionner un livreur'); ?>
-
     <label for="nom">Nom</label>
     <input class="form-control" type="text" name="nom" id="nom" required>
-
     <label for="type">Type</label>
     <select class="form-control" name="type" id="type">
         <option value="plat">Plat</option>
         <option value="dessert">Dessert</option>
     </select>
-
     <label for="prix_produit">Prix</label>
     <input class="form-control" type="number" name="prix_produit" id="prix_produit" required>
-
     <label for="quantite_stock">Stock</label>
     <input class="form-control" type="number" name="quantite_stock" id="quantite_stock">
-
-
     <input type="submit" value="Editer">
 </form>
 <?php

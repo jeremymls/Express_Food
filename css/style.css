@@ -2488,7 +2488,9 @@ textarea.form-control-lg {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+     color-adjust: exact;
+          print-color-adjust: exact;
 }
 .form-check-input[type=checkbox] {
   border-radius: 0.25em;
@@ -11902,4 +11904,11 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+}
+#dashboard a {
+  margin-bottom: 1rem;
+}
+
+.breadcrumb {
+  font-size: 2rem;
 }/*# sourceMappingURL=style.css.map */

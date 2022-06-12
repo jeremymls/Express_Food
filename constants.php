@@ -1,10 +1,9 @@
 <?php
 // Accès BDD MySQL
-const HOST = 'database';
+const HOST = 'localhost';
 const USER = 'root';
-const PASS = 'TMX2021';
-const DB = 'EXPRESSFOOD';
-const PORT = '3306';
+const PASS = 'root';
+const DB = 'expressfood';
 
 // Accès BAL Gmail
 const MB_HOST = '{imap.gmail.com:993/imap/ssl/novalidate-cert}INBOX';
