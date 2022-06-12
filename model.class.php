@@ -62,6 +62,24 @@ class Model extends Singleton
     }
 
     /**
+     * Méthode qui renvoie une seule ligne d'un SELECT
+     * sous la forme d'un tableau associatif
+     * @param string $pk - WHERE clause
+     * @return array résultat de la requête SELECT 
+     */
+
+    public function getRowParams(string $pk): array
+    {
+        try {
+            $qry = $this->db->prepare('SELECT * FROM ' . $this->table . ' WHERE (' . $pk . ')');
+            $qry->execute(array());
+            return $qry->fetch();
+        } catch (PDOException $err) {
+            throw new PDOException(__CLASS__ . ' : ' . $err->getMessage());
+        }
+    }
+
+    /**
      * Méthode qui insère une ligne dans la table
      * @param array $post - tableau du type $_POST
      */

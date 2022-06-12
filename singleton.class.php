@@ -115,10 +115,11 @@ class Singleton
      * @param string $id - attributs id et name du composant
      * @param string $sql - requête SQL préparée de type SELECT/SHOW
      * @param array $vals - tableau de paramètres (défaut array())
+     * @param string $defaultValue - Valeur par défaut du composant
      * @return string code HTML 
      */
 
-    public static function getHtmlSelect($id, $sql, $vals = array())
+    public static function getHtmlSelect($id, $sql, $vals = array(), $defaultValue = null)
     {
         // Test si configuration dispo
         if (self::hasConfiguration()) {
@@ -130,6 +131,9 @@ class Singleton
                 $qry->execute($vals);
                 // Construit le composant HTML
                 $html = '<select id="' . $id . '" name="' . $id . '" class="form-control">';
+                if ($defaultValue !== null) {
+                    $html .= '<option value=0>' . $defaultValue . '</option>';
+                }
                 while ($row = $qry->fetch(PDO::FETCH_NUM)) {
                     // Si requête renvoie une seule colonne
                     if ($qry->columnCount() === 1) {
@@ -177,8 +181,14 @@ class Singleton
                     // Affiche les data
                     while ($row = $qry->fetch()) {
                         $html .= '<tr>';
-                        foreach ($row as $val) {
-                            $html .= '<td>' . $val . '</td>';
+                        foreach ($row as $key => $val) {
+                            if ($key == "menu_jour" && $val == 1) {
+                                $html .= '<td>Oui</td>';
+                            } elseif ($key == "menu_jour" && $val == 0) {
+                                $html .= '<td>Non</td>';
+                            } else {
+                                $html .= '<td>' . $val . '</td>';
+                            };
                         }
                         $html .= '</tr>';
                     }
@@ -197,14 +207,15 @@ class Singleton
 
     /**
      * Méthode qui renvoie le résultat d'une requête préparée
-     * SELECT/SHOW sous la forme d'un composant 
-     * HTML table
+     * SELECT/SHOW sous la forme d'un composant HTML table
+     * OPTION: Boutons personnalisés
      * @param string $sql - requête SQL de type SELECT/SHOW
      * @param array $vals - tableau de paramètres
+     * @param array $btns - tableau d'objets de type {title, href}
      * @return string code HTML
      */
 
-    public static function getHtmlTableCustom(string $sql, array $vals = array())
+    public static function getHtmlTableCustom(string $sql, array $vals = array(), array $btns = array())
     {
         if (self::hasConfiguration()) {
             // Teste si al requête est bien du type SELECT/SHOW
@@ -220,14 +231,34 @@ class Singleton
                         $meta = $qry->getColumnMeta($i);
                         $html .= '<th>' . $meta['name'] . '</th>';
                     }
-                    $html .= '<th></th></tr></thead><tbody>';
+                    if (count($btns) > 0) {
+                        foreach ($btns as $btn) {
+                        $html .= '<th></th>';
+                        }
+                    }
+                    $html .= '</tr></thead><tbody>';
                     // Affiche les data
                     while ($row = $qry->fetch()) {
                         $html .= '<tr>';
                         foreach ($row as $val) {
                             $html .= '<td>' . $val . '</td>';
                         }
-                        $html .= '<td><a href="?item=' . $row["produit_id"] . '" class="btn btn-primary">Prendre</a></td>';
+                        if (count($btns) > 0) {
+                            foreach ($btns as $btn) {
+                                if ($btn->options) {
+                                    $options = '?';
+                                    foreach ($btn->options as $key => $val) {
+                                        $options .= $key>0 ? '&':'';
+                                        $options .= $val . '=' . $row[$val];
+                                    }
+                                }
+                                $color = isset($btn->color) ? $btn->color : 'primary';
+                                // var_dump($btn);
+                                $html .= '<td><a href="' . $btn->link . $options .'" class="btn btn-'. $color.'">' . $btn->title . '</a></td>';
+                            }
+                        }
+                        // $html .= '<td><a href="?item=' . $row["produit_id"] . '" class="btn btn-primary">Prendre</a></td>';
+                        // $html .= '<td><a href="?item=" class="btn btn-primary">Prendre</a></td>';
                         $html .= '</tr>';
                     }
                     $html .= '</tbody></table>';
